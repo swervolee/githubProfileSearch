@@ -4,6 +4,7 @@ document.getElementById("search").addEventListener("click", async () => {
     const reposList = document.getElementById("repos-list");
     const loading = document.querySelector(".loading");
     const repoItems = document.getElementById("repo-items");
+    
 
     profileCard.classList.add("d-none");
     reposList.classList.add("d-none");
@@ -36,7 +37,7 @@ document.getElementById("search").addEventListener("click", async () => {
 	profileCard.classList.remove("d-none");
 
 	// Fetch repositories
-	const reposResponse = await fetch(profileData.repos_url);
+	const reposResponse = await fetch(`/api/github/repos/${username}`);//fetch(profileData.repos_url);
 	if (!reposResponse.ok) throw new Error("Failed to fetch repositories");
 
 	const reposData = await reposResponse.json();
