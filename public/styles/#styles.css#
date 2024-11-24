@@ -1,0 +1,58 @@
+body {
+    background-color: #121212;
+    color: #f1f1f1;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+h1, p {
+    color: #f8f9fa;
+}
+
+header {
+    background-color: #1c1c1c;
+}
+
+.input-group input {
+    background-color: #1e1e1e;
+    border: 1px solid #444;
+    color: #f1f1f1;
+}
+
+.input-group input:focus {
+    box-shadow: 0 0 10px #ff7e5f;
+}
+
+.btn-primary {
+    background-color: #ff7e5f;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #feb47b;
+}
+
+.card {
+    background-color: #1e1e1e;
+    border: 1px solid #444;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.card img {
+    border: 3px solid #444;
+}
+
+.badge {
+    font-size: 1rem;
+}
+
+a {
+    color: #ff7e5f;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.loading {
+    color: #ff7e5f;
+}
