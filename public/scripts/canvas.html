@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Commits Graph</title>
+    <style>
+      canvas {
+          display: block;
+          margin: 20px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="commitGraph" width="800" height="400"></canvas>
+
+    <script>
+      const USERNAME = 'octocat'; // Replace with the username
+      const TOKEN = 'your_github_token'; // Replace with your GitHub token
+
+      // Function to fetch repositories of a user
+      async function fetchRepositories(username) {
+          const response = await fetch(`https://api.github.com/users/${username}/repos`, {
+              headers: {
+                  Authorization: `token ${TOKEN}`
+              }
+          });
+          return await response.json();
+      }
+
+      // Function to fetch commit timestamps for a repository
+      async function fetchCommits(repoName, username) {
+          const response = await fetch(`https://api.github.com/repos/${repoName}/commits?author=${username}`, {
+              headers: {
+                  Authorization: `token ${TOKEN}`
+              }
+          });
+          const commits = await response.json();
+          return commits.map(commit => commit.commit.author.date);
+      }
+
+      // Function to aggregate commit data by date
+      function aggregateCommits(dates) {
+          const commitCount = {};
+          dates.forEach(date => {
+              const day = new Date(date).toISOString().split('T')[0];
+              commitCount[day] = (commitCount[day] || 0) + 1;
+          });
+          return commitCount;
+      }
+
+      // Function to draw the graph
+      function drawGraph(data) {
+          const canvas = document.getElementById('commitGraph');
+          const ctx = canvas.getContext('2d');
+
+          const dates = Object.keys(data).sort(); // Sort the dates
+          const values = dates.map(date => data[date]);
+
+          // Calculate dimensions
+          const padding = 50;
+          const graphWidth = canvas.width - padding * 2;
+          const graphHeight = canvas.height - padding * 2;
+          const maxValue = Math.max(...values);
+
+          // Scale values
+          const xScale = graphWidth / (dates.length - 1);
+          const yScale = graphHeight / maxValue;
+
+          // Clear canvas
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // Draw axes
+          ctx.beginPath();
+          ctx.moveTo(padding, padding);
+          ctx.lineTo(padding, canvas.height - padding);
+          ctx.lineTo(canvas.width - padding, canvas.height - padding);
+          ctx.stroke();
+
+          // Draw the line graph
+          ctx.beginPath();
+          ctx.moveTo(padding, canvas.height - padding - values[0] * yScale);
+          for (let i = 1; i < dates.length; i++) {
+              ctx.lineTo(
+                  padding + i * xScale,
+                  canvas.height - padding - values[i] * yScale
+              );
+          }
+          ctx.strokeStyle = 'blue';
+          ctx.stroke();
+
+          // Add labels
+          ctx.fillStyle = 'black';
+          ctx.font = '12px Arial';
+          for (let i = 0; i < dates.length; i += Math.ceil(dates.length / 10)) {
+              const x = padding + i * xScale;
+              ctx.fillText(dates[i], x - 15, canvas.height - padding + 20);
+          }
+          for (let i = 0; i <= maxValue; i += Math.ceil(maxValue / 5)) {
+              const y = canvas.height - padding - i * yScale;
+              ctx.fillText(i, padding - 30, y + 5);
+          }
+      }
+
+      // Main function
+      async function main() {
+          const repos = await fetchRepositories(USERNAME);
+          let allDates = [];
+          for (const repo of repos) {
+              const commitDates = await fetchCommits(repo.full_name, USERNAME);
+              allDates = allDates.concat(commitDates);
+          }
+          const commitData = aggregateCommits(allDates);
+          drawGraph(commitData);
+      }
+
+      main().catch(console.error);
+    </script>
+  </body>
+</html>
