@@ -39,104 +39,6 @@ export function updateProfileUI(profileData) {
 }
 
 
-export function drawGraph(data) {
-    const canvas = document.getElementById('commitGraph');
-    const ctx = canvas.getContext('2d');
-
-    const dates = Object.keys(data).sort(); // Sort the dates
-    const values = dates.map(date => data[date]);
-
-    // Calculate dimensions
-    const padding = 50;
-    const graphWidth = canvas.width - padding * 2;
-    const graphHeight = canvas.height - padding * 2;
-    const maxValue = Math.max(...values);
-
-    // Scale values
-    const xScale = graphWidth / (dates.length - 1);
-    const yScale = graphHeight / maxValue;
-
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw axes
-    ctx.lineWidth = 1.5;
-    ctx.strokeStyle = '#333';
-    ctx.beginPath();
-    ctx.moveTo(padding, padding);
-    ctx.lineTo(padding, canvas.height - padding);
-    ctx.lineTo(canvas.width - padding, canvas.height - padding);
-    ctx.stroke();
-
-    // Draw grid lines for better readability
-    ctx.strokeStyle = '#ccc';
-    ctx.lineWidth = 0.5;
-    for (let i = 0; i <= maxValue; i += Math.ceil(maxValue / 5)) {
-        const y = canvas.height - padding - i * yScale;
-        ctx.beginPath();
-        ctx.moveTo(padding, y);
-        ctx.lineTo(canvas.width - padding, y);
-        ctx.stroke();
-    }
-
-    for (let i = 0; i < dates.length; i += Math.ceil(dates.length / 10)) {
-        const x = padding + i * xScale;
-        ctx.beginPath();
-        ctx.moveTo(x, padding);
-        ctx.lineTo(x, canvas.height - padding);
-        ctx.stroke();
-    }
-
-    // Create a gradient for the line
-    const gradient = ctx.createLinearGradient(0, padding, 0, canvas.height - padding);
-    gradient.addColorStop(0, 'rgba(33, 150, 243, 0.9)'); // Blue
-    gradient.addColorStop(1, 'rgba(33, 150, 243, 0.1)'); // Transparent blue
-
-    // Draw the filled area under the graph
-    ctx.beginPath();
-    ctx.moveTo(padding, canvas.height - padding);
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = 'rgba(33, 150, 243, 1)';
-    ctx.fillStyle = gradient;
-
-    ctx.lineTo(padding, canvas.height - padding - values[0] * yScale);
-    for (let i = 1; i < dates.length; i++) {
-        const x = padding + i * xScale;
-        const y = canvas.height - padding - values[i] * yScale;
-        const cp1x = padding + (i - 0.5) * xScale;
-        const cp1y = canvas.height - padding - values[i - 1] * yScale;
-        ctx.quadraticCurveTo(cp1x, cp1y, x, y);
-    }
-
-    ctx.lineTo(padding + (dates.length - 1) * xScale, canvas.height - padding);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    // Add data points
-    ctx.fillStyle = 'red';
-    for (let i = 0; i < dates.length; i++) {
-        const x = padding + i * xScale;
-        const y = canvas.height - padding - values[i] * yScale;
-        ctx.beginPath();
-        ctx.arc(x, y, 3, 0, 2 * Math.PI);
-        ctx.fill();
-    }
-
-    // Add labels for axes
-    ctx.fillStyle = 'black';
-    ctx.font = '12px Arial';
-    for (let i = 0; i < dates.length; i += Math.ceil(dates.length / 10)) {
-        const x = padding + i * xScale;
-        ctx.fillText(dates[i], x - 20, canvas.height - padding + 20);
-    }
-
-    for (let i = 0; i <= maxValue; i += Math.ceil(maxValue / 5)) {
-        const y = canvas.height - padding - i * yScale;
-        ctx.fillText(i, padding - 35, y + 5);
-    }
-}
-
 
 export function updateReposUI(reposData) {
     const repoItems = document.getElementById("repo-items");
@@ -254,6 +156,118 @@ export function updateReposUI(reposData) {
         });
     }
 }
+
+
+
+
+export function drawGraph(data) {
+    const canvas = document.getElementById('commitGraph');
+    const ctx = canvas.getContext('2d');
+
+    const dates = Object.keys(data).sort(); // Sort the dates
+    const values = dates.map(date => data[date]);
+
+    // Calculate dimensions
+    const padding = 50;
+    const graphWidth = canvas.width - padding * 2;
+    const graphHeight = canvas.height - padding * 2;
+    const maxValue = Math.max(...values);
+
+    // Scale values
+    const xScale = graphWidth / (dates.length - 1);
+    const yScale = graphHeight / maxValue;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw axes
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = '#333';
+    ctx.beginPath();
+    ctx.moveTo(padding, padding);
+    ctx.lineTo(padding, canvas.height - padding);
+    ctx.lineTo(canvas.width - padding, canvas.height - padding);
+    ctx.stroke();
+
+    // Grid lines
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= maxValue; i += Math.ceil(maxValue / 5)) {
+        const y = canvas.height - padding - i * yScale;
+        ctx.beginPath();
+        ctx.moveTo(padding, y);
+        ctx.lineTo(canvas.width - padding, y);
+        ctx.stroke();
+    }
+
+    for (let i = 0; i < dates.length; i += Math.ceil(dates.length / 10)) {
+        const x = padding + i * xScale;
+        ctx.beginPath();
+        ctx.moveTo(x, padding);
+        ctx.lineTo(x, canvas.height - padding);
+        ctx.stroke();
+    }
+
+    // Draw the graph
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(33, 150, 243, 1)';
+    ctx.fillStyle = 'rgba(33, 150, 243, 0.1)';
+    ctx.moveTo(padding, canvas.height - padding);
+    for (let i = 0; i < dates.length; i++) {
+        const x = padding + i * xScale;
+        const y = canvas.height - padding - values[i] * yScale;
+        ctx.lineTo(x, y);
+    }
+    ctx.lineTo(padding + (dates.length - 1) * xScale, canvas.height - padding);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // Add data points
+    ctx.fillStyle = 'red';
+    for (let i = 0; i < dates.length; i++) {
+        const x = padding + i * xScale;
+        const y = canvas.height - padding - values[i] * yScale;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+
+    // Add axis labels
+    ctx.fillStyle = 'black';
+    ctx.font = '12px Arial';
+    for (let i = 0; i < dates.length; i += Math.ceil(dates.length / 10)) {
+        const x = padding + i * xScale;
+        ctx.fillText(dates[i], x - 20, canvas.height - padding + 20);
+    }
+
+    for (let i = 0; i <= maxValue; i += Math.ceil(maxValue / 5)) {
+        const y = canvas.height - padding - i * yScale;
+        ctx.fillText(i, padding - 35, y + 5);
+    }
+
+    // Tooltip for hover interaction
+    canvas.addEventListener('mousemove', event => {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        for (let i = 0; i < dates.length; i++) {
+            const x = padding + i * xScale;
+            const y = canvas.height - padding - values[i] * yScale;
+            if (Math.abs(mouseX - x) < 5 && Math.abs(mouseY - y) < 5) {
+                // Clear tooltip
+                ctx.clearRect(0, 0, canvas.width, padding);
+                ctx.fillStyle = 'black';
+                ctx.fillText(`Date: ${dates[i]}, Commits: ${values[i]}`, mouseX + 10, mouseY - 10);
+                break;
+            }
+        }
+    });
+}
+
+
 
 
 export function showError(message) {
