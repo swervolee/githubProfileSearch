@@ -1,6 +1,6 @@
-const fetch = require("node-fetch");
-const redisService = require('../services/redisService');
-const headers = require('../config/apiConfig');
+import fetch from 'node-fetch';
+import redisService from '../services/redisService.js';
+import headers from '../config/apiConfig.js';
 
 // GitHub API Request
 const fetchGitHubUser = async (username) => {
@@ -71,6 +71,6 @@ const fetchCommits = async(req, res) => {
 	res.status(500).json({error: "An error occurred", details: err.message });
     }
 }
-module.exports = { getGitHubUserData,
-		   getGitHubRepos,
-		   fetchCommits};
+
+
+export default { getGitHubUserData, getGitHubRepos, fetchCommits };
