@@ -1,63 +1,151 @@
-body {
-    background-color: #121212;
-    color: #f1f1f1;
-    font-family: 'Poppins', Arial, sans-serif;
+:root {
+    --primary: #36626a;
+    --secondary: #588d9c;
+    --background: #F3F4F6; /* Light Gray */
+    --accent: #0e2431;
+    --text-dark: #111827; /* Blackish */
+    --text-light: #FFFFFF; /* White */
 }
 
-h1, p {
-    color: #f8f9fa;
+body {
+    background-color: var(--background);
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
 }
 
 header {
-    background-color: #1c1c1c;
+    background: linear-gradient(90deg, var(--secondary), var(--accent));
+    color: var(--text-light);
+    text-align: center;
+    border-bottom: 4px solid var(--accent);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
+
+header h1 {
+    font-weight: bold;
+    font-size: 2.5rem;
+}
+
+header p {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+
 
 .input-group input {
-    background-color: #1e1e1e;
-    border: 1px solid #444;
-    color: #f1f1f1;
+    border: 2px solid var(--secondary);
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    background-color: var(--background);
+    max-width: 500px;
 }
 
-.input-group input:focus {
-    box-shadow: 0 0 10px #ff7e5f;
+.btn-custom {
+    background-color: var(--accent);
+    color: var(--text-light);
+    font-weight: bold;
+    transition: background 0.3s ease;
+    border-radius: 0.5rem;
 }
 
-.btn-primary {
-    background-color: #ff7e5f;
-    border: none;
-}
-
-.btn-primary:hover {
-    background-color: #feb47b;
+.btn-custom:hover {
+    background-color: #EA580C;
 }
 
 .card {
-    background-color: #1e1e1e;
-    border: 1px solid #444;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    background: var(--text-light);
+    border: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    border-radius: 1rem;
+    max-width: 800px;
 }
 
-.card img {
-    border: 3px solid #444;
+
+#profile-card {
+    background: var(--text-light);
+    border: none;
+    color: var(--text-dark);
+    border-radius: 1rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+   
 }
 
-.badge {
+#name {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+#bio {
+    font-style: italic;
+    margin: 0.5rem 0;
+    color: var(--secondary);
+}
+
+#profile-link {
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background-color: var(--secondary);
+    color: var(--text-light);
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#profile-link:hover {
+    background-color: var(--accent);
+    text-decoration: none;
+}
+
+ul {
+    background-color: var(--background);
+    border-radius: 15px;
+    padding: 1rem;
+    color: var(--text-dark);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+ul li {
+    margin-bottom: 0.8rem;
     font-size: 1rem;
 }
 
-a {
-    color: #ff7e5f;
+ul li strong {
+    font-weight: bold;
+    color: var(--text-dark);
 }
 
-a:hover {
+ul li a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+ul li a:hover {
     text-decoration: underline;
 }
 
-.loading {
-    color: #ff7e5f;
+.badge-custom {
+    background-color: var(--accent);
+    color: var(--text-light);
+    font-size: 0.9rem;
+    border-radius: 15px;
+    padding: 0.4rem 0.8rem;
 }
 
-#repos-list {
-    height: 500px;
-    overflow-y: scroll;
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--primary);
+    color: var(--text-light);
+}
+
+footer p {
+    margin: 0;
 }
