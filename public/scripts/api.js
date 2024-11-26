@@ -16,7 +16,11 @@ export async function fetchUserProfile(username) {
 export async function fetchUserRepos(username) {
     const response = await fetch(`/api/github/repos/${username}`);
     if (!response.ok) throw new Error("Failed to fetch repositories");
-    return response.json();
+
+    const repos = await response.json();
+
+    repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    return repos;
 }
 
 

@@ -139,6 +139,14 @@ ul li a:hover {
     padding: 0.4rem 0.8rem;
 }
 
+
+
+#repo-items {
+    height: 800px;
+    overflow-y: scroll;
+}
+
+
 footer {
     text-align: center;
     padding: 1.5rem;

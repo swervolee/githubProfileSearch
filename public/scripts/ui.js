@@ -147,12 +147,14 @@ export function updateReposUI(reposData) {
         const noReposItem = document.createElement("li");
         noReposItem.style.cssText = `
             padding: 1rem; 
-            background-color: #f8d7da; 
+            background: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(5px); 
             color: #721c24; 
             border: 1px solid #f5c6cb; 
-            border-radius: 5px;
-            margin-bottom: 0.5rem;
+            border-radius: 8px; 
+            margin-bottom: 0.5rem; 
             text-align: center;
+            font-size: 1.2rem;
         `;
         noReposItem.textContent = "No repositories available";
         repoItems.appendChild(noReposItem);
@@ -161,43 +163,93 @@ export function updateReposUI(reposData) {
         reposData.forEach(repo => {
             const repoItem = document.createElement("li");
             repoItem.style.cssText = `
-                display: flex; 
-                justify-content: space-between; 
-                align-items: center; 
                 padding: 1rem; 
-                background-color: #f1f1f1; 
+                background: rgba(255, 255, 255, 0.5);
+                color: #333; 
                 border: 1px solid #ddd; 
-                border-radius: 5px; 
+                border-radius: 8px; 
                 margin-bottom: 0.5rem;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                transition: transform 0.2s, box-shadow 0.2s;
             `;
+            repoItem.onmouseover = () => {
+                repoItem.style.transform = "translateY(-3px)";
+                repoItem.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+            };
+            repoItem.onmouseout = () => {
+                repoItem.style.transform = "translateY(0)";
+                repoItem.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
+            };
 
-            // Repository Link
+            // Repository Name and Link
             const repoLink = document.createElement("a");
             repoLink.href = repo.html_url;
             repoLink.target = "_blank";
             repoLink.textContent = repo.name;
             repoLink.style.cssText = `
                 text-decoration: none; 
-                color: #007bff; 
+                color: #0056b3; 
                 font-weight: bold;
+                font-size: 1.1rem;
             `;
-            repoLink.onmouseover = () => (repoLink.style.color = "#0056b3");
-            repoLink.onmouseout = () => (repoLink.style.color = "#007bff");
+            repoLink.onmouseover = () => (repoLink.style.color = "#003d8f");
+            repoLink.onmouseout = () => (repoLink.style.color = "#0056b3");
+
+            // Repository Description
+            const repoDescription = document.createElement("p");
+            repoDescription.textContent = repo.description || "No description provided.";
+            repoDescription.style.cssText = `
+                margin: 0.5rem 0; 
+                font-size: 0.9rem; 
+                color: #555;
+            `;
+
+            // Repository Details
+            const repoDetails = document.createElement("div");
+            repoDetails.style.cssText = `
+                display: flex; 
+                justify-content: space-between; 
+                align-items: center; 
+                font-size: 0.9rem;
+                color: #777;
+            `;
+
+            // Language
+            const repoLanguage = document.createElement("span");
+            repoLanguage.textContent = repo.language || "Unknown";
+            repoLanguage.style.cssText = `
+                font-style: italic;
+            `;
+
+            // Last Updated
+            const repoUpdated = document.createElement("span");
+            const updatedDate = new Date(repo.updated_at);
+            repoUpdated.textContent = `Updated: ${updatedDate.toLocaleDateString()}`;
+            repoUpdated.style.cssText = `
+                color: #999;
+            `;
 
             // Stars Badge
             const starsBadge = document.createElement("span");
             starsBadge.textContent = `${repo.stargazers_count} ★`;
             starsBadge.style.cssText = `
-                background-color: #007bff; 
+                background-color: #fc3a52; 
                 color: white; 
-                padding: 0.3rem 0.5rem; 
-                border-radius: 10px; 
+                padding: 0.4rem 0.7rem; 
+                border-radius: 12px; 
                 font-size: 0.9rem;
+                font-weight: bold;
             `;
 
-            // Append elements
+            // Assemble Details
+            repoDetails.appendChild(repoLanguage);
+            repoDetails.appendChild(repoUpdated);
+            repoDetails.appendChild(starsBadge);
+
+            // Append all elements
             repoItem.appendChild(repoLink);
-            repoItem.appendChild(starsBadge);
+            repoItem.appendChild(repoDescription);
+            repoItem.appendChild(repoDetails);
             repoItems.appendChild(repoItem);
         });
     }
