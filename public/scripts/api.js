@@ -8,8 +8,19 @@ function aggregateCommits(dates) {
       }
 
 export async function fetchUserProfile(username) {
+    const profileNotFoundContainer = document.getElementById('profile-not-found');
     const response = await fetch(`/api/github/user/${username}`);
-    if (!response.ok) throw new Error("Profile not found");
+    if (!response.ok) {
+	profileNotFoundContainer.innerHTML = `
+                 <div class="alert alert-warning" role="alert">
+                     <h4 class="alert-heading">Profile Not Found</h4>
+                     <p>The GitHub profile you are looking for could not be retrieved.</p>
+                     <hr>
+                     <p class="mb-0">Please double-check the username and try again.</p>
+                 </div>`;
+	console.log("error populated");
+	throw new Error("Profile not found");
+    }
     return response.json();
 }
 
