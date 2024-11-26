@@ -1,4 +1,4 @@
-const fetch = await import('node-fetch').then(module => module.defualt);
+import fetch from 'node-fetch';
 import redisService from '../services/redisService.js';
 import headers from '../config/apiConfig.js';
 
