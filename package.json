@@ -20,7 +20,7 @@
 	"morgan": "^1.10.0"
     },
     "devDependencies": {
-	"node-fetch": "^8.5.0",
+	"node-fetch": "^3.3.0",
 	"@babel/cli": "^7.22.9",
 	"@babel/node": "^7.26.0",
 	"@babel/preset-env": "^7.22.15",
