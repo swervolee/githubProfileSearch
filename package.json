@@ -1,15 +1,16 @@
 {
   "name": "node_js_basics",
   "version": "1.0.0",
-  "description": "",
+  "description": "A quick way to get a profiles info app.",
   "main": "index.js",
   "scripts": {
     "lint": "eslint",
     "check-lint": "eslint [0-9]*.js",
     "test": "mocha --require @babel/register --exit",
-    "dev": "nodemon --exec babel-node --presets @babel/preset-env ./server.js"
+    "dev": "nodemon --exec babel-node --presets @babel/preset-env ./server.js",
+    "start": "node server.js"
   },
-  "author": "",
+  "author": "swervolee",
   "license": "ISC",
   "dependencies": {
     "chai-http": "^4.3.0",
@@ -31,5 +32,16 @@
     "nodemon": "^3.0.1",
     "request": "^2.88.2",
     "sinon": "^15.2.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swervolee/githubProfileSearch.git"
+  },
+  "keywords": [
+    "Github"
+  ],
+  "bugs": {
+    "url": "https://github.com/swervolee/githubProfileSearch/issues"
+  },
+  "homepage": "https://github.com/swervolee/githubProfileSearch#readme"
 }
