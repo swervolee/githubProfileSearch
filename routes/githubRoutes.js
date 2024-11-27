@@ -1,9 +1,6 @@
-import express from 'express';
+const express = require('express');
 const router = express.Router();
-
-import githubController from '../controllers/githubController.js';
-
-const { getGitHubUserData, getGitHubRepos, fetchCommits } = githubController;
+const githubController = require('../controllers/githubController');
 
 // Route for fetching GitHub user data
 router.get('/user/:username', githubController.getGitHubUserData);
@@ -14,4 +11,4 @@ router.get('/repos/:username', githubController.getGitHubRepos);
 // Route for fetching github repo commits
 router.get('/commits/:repoName/:username', githubController.fetchCommits);
 
-export default  router;
+module.exports = router;

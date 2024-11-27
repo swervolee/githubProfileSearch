@@ -5,4 +5,4 @@ const headers = {
     "User-Agent": "swervolee",
 };
 
-export default headers;
+module.exports = headers;

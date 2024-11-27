@@ -1,11 +1,11 @@
 #!/usr/bin/node
-import express from 'express';
-import cors from 'cors';
-import githubRoutes from './routes/githubRoutes.js';
-import redisService from './services/redisService.js';
-import apiConfig from './config/apiConfig.js';
-import morgan from 'morgan';
 
+const express = require("express");
+const cors = require('cors');
+const githubRoutes = require('./routes/githubRoutes');
+const redisService = require('./services/redisService');
+const apiConfig = require('./config/apiConfig');
+const morgan = require('morgan');
 
 
 const app = express();
@@ -23,4 +23,4 @@ app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 
-export default app;
+module.exports = app;
